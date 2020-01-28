@@ -11,26 +11,34 @@ var stringifyJSON = function(obj) {
   	return 'null';
   }
   // if obj is true or false
-  else if (obj === "boolean") {
-  	return ? 'true' : false;
+  else if (obj === true) {
+  	return 'true';
+  }
+  else if (obj === false) {
+  	return 'false';
   }
   // if obj is undefined
   else if (obj === undefined) {
   	return undefined;
   }
-  // if obj is string
+  // if obj is number
   else if (typeof obj === "number") {
   	return String(obj);
+  }
+  // if obj is string
+  else if (typeof obj === "string") {
+  	return '"' + obj + '"';
   }
   // if array:
   else if (Array.isArray(obj)) {
   	var result = [];
   	if (obj.length > 0) {
   		obj.forEach(function(element) {
-  			result.push(stringifyJSON(element));
+  			var value = stringifyJSON(element);
+  			result.push(value.toString());
   		}); 		
   	}
-  	return "[" + result.toString() + "]";
+  	return "[" + result + "]";
   }
 
   // if object:
@@ -38,13 +46,14 @@ var stringifyJSON = function(obj) {
   	var result = [];
   	Object.keys(obj).forEach(function(key) {
   		if (obj[key] !== null) {
-  			result.push(stringifyJSON(element));
+  			var value = stringifyJSON(obj[key]);
+  			var key = ('"' + key + '":');
+  			result.push(key + value);
   		}
   	});	
-  	return "{" + result.toString() + "}";
+  	return "{" + result + "}";
   }
 else {
 	return '{}';
 }
-
 };
